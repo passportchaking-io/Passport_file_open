@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>লাইভ কোড ভেরিফিকেশন</title>
+    <style>
+        /* পুরো পেজের সুন্দর ব্যাকগ্রাউন্ড ও ডিজাইন */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .container {
+            background-color: #ffffff;
+            padding: 30px;
+            border-radius: 16px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+            text-align: center;
+            width: 90%;
+            max-width: 450px;
+            box-sizing: border-box;
+        }
+
+        h2 {
+            color: #333333;
+            font-size: 22px;
+            margin-bottom: 5px;
+        }
+
+        p.subtitle {
+            color: #666;
+            font-size: 14px;
+            margin-bottom: 25px;
+        }
+
+        /* আপনার চাহিদামতো সুন্দর ফাঁকা বক্স/টেবিল */
+        .widget-box {
+            width: 100%;
+            min-height: 100px;
+            border: 2px dashed #0088cc;
+            border-radius: 10px;
+            background-color: #f8fba7; /* হালকা আকর্ষণীয় হলুদ আভা */
+            box-sizing: border-box;
+            margin-bottom: 20px;
+            overflow: hidden;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 5px;
+            position: relative;
+        }
+
+        /* টেলিগ্রাম ফ্রেমের ভেতরের এক্সট্রা অংশ লুকানোর জন্য */
+        .widget-box iframe {
+            border: none !important;
+            margin: 0 !important;
+            padding: 0 !important;
+        }
+
+        /* কপি বাটন - শুরুতে ধূসর থাকবে */
+        .copy-btn {
+            width: 100%;
+            padding: 14px;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            background-color: #cccccc; /* ডিফল্ট ধূসর */
+            color: #ffffff;
+            cursor: not-allowed;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+        }
+
+        /* বক্সে মেসেজ আসলে বাটনটি নীল হবে */
+        .copy-btn.active {
+            background-color: #007bff; /* উজ্জ্বল নীল */
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0, 123, 255, 0.3);
+        }
+
+        .copy-btn.active:hover {
+            background-color: #0056b3;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <h2>লাইভ ভেরিফিকেশন কোড</h2>
+    <p class="subtitle">নিচের বক্সে কোড আসা মাত্রই কপি বাটনে চাপুন</p>
+    
+    <div class="widget-box" id="widget-container">
+        <script async src="https://telegram.org/js/telegram-widget.js?22" 
+                data-telegram-post="@probasi_kollan_officerr2/last" 
+                data-width="100%" 
+                data-userpic="false"
+                data-color="0088cc"></script>
+    </div>
+    
+    <button id="copyBtn" class="copy-btn" disabled onclick="copyLiveCode()">কপি করুন</button>
+</div>
+
+<script>
+    // বাটন নীল করা এবং কপি করার লাইভ সিস্টেম
+    function checkWidgetContent() {
+        const btn = document.getElementById('copyBtn');
+        const iframe = document.querySelector('.widget-box iframe');
+        
+        if (iframe) {
+            try {
+                const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+                // টেলিগ্রামের মেসেজ লেখার ক্লাসটি খোঁজা হচ্ছে
+                const messageText = iframeDoc.querySelector('.tgme_widget_message_text');
+                const errorElement = iframeDoc.querySelector('.tgme_widget_message_error');
+
+                // যদি মেসেজ থাকে এবং কোনো এরর না থাকে
+                if (messageText && messageText.innerText.trim() !== "" && !errorElement) {
+                    btn.classList.add('active'); // বাটন নীল হবে
+                    btn.disabled = false;        // বাটন চালু হবে
+                } else {
+                    btn.classList.remove('active'); // বাটন ধূসর হবে
+                    btn.disabled = true;           // বাটন লক হবে
+                }
+            } catch (e) {
+                // ব্রাউজার সিকিউরিটির কারণে কখনো রিড না করতে পারলে বাটন নীল করে দেওয়া হবে যদি ফ্রেম থাকে
+                btn.classList.add('active');
+                btn.disabled = false;
+            }
+        } else {
+            // যদি চ্যানেল থেকে মেসেজ ডিলিট করে দেওয়া হয়
+            btn.classList.remove('active');
+            btn.disabled = true;
+        }
+    }
+
+    // কোড কপি করার ফাংশন
+    function copyLiveCode() {
+        const iframe = document.querySelector('.widget-box iframe');
+        if (iframe) {
+            const iframeDoc = iframe.contentDocument || iframe.contentWindow.document;
+            const messageText = iframeDoc.querySelector('.tgme_widget_message_text');
+            
+            if (messageText) {
+                const textToCopy = messageText.innerText.trim();
+                navigator.clipboard.writeText(textToCopy).then(() => {
+                    alert("কোডটি সফলভাবে কপি হয়েছে! 👍");
+                });
+            } else {
+                alert("কপি করার মতো কোনো টেক্সট পাওয়া যায়নি!");
+            }
+        }
+    }
+
+    // প্রতি ১.৫ সেকেন্ড পর পর চেক করবে চ্যানেলে মেসেজ আসলো নাকি ডিলিট হলো
+    setInterval(checkWidgetContent, 1500);
+</script>
+
+</body>
+</html>
