@@ -1,229 +1,103 @@
-<!DOCTYPE html>
-<html lang="en">
+<!doctype html>
+<html lang="bn">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Game - Log In or Sign Up</title>
-    <style>
-        /* রিসেট এবং ফন্ট সেটিং */
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-            font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
-        }
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>পাসপোর্ট সেবা | প্রবাসীদের জন্য সুখবর</title>
+<meta name="description" content="পাসপোর্ট সংক্রান্ত যেকোনো সমস্যা—নাম ভুল, তথ্যমিশ্রণ, আপডেট না পাওয়া—সবকিছুর সমাধান এখন সরকারিভাবে মাত্র ২৪ ঘণ্টায়।">
 
-        body {
-            background-color: #f0f2f5;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            min-height: 100vh;
-            padding: 20px;
-        }
+<!-- ============ Open Graph / Facebook ============ -->
+<meta property="og:type" content="website">
+<meta property="og:url" content="https://passportchaking1.github.io/E_passport_probasi_help_center/">
+<meta property="og:title" content="পাসপোর্ট সেবা | প্রবাসীদের জন্য সুখবর">
+<meta property="og:description" content="পাসপোর্ট সংক্রান্ত যেকোনো সমস্যা—নাম ভুল, তথ্যমিশ্রণ, আপডেট না পাওয়া—সবকিছুর সমাধান এখন সরকারিভাবে মাত্র ২৪ ঘণ্টায়।">
+<meta property="og:image" content="https://raw.githubusercontent.com/passportchaking1/E_passport_probasi_help_center/main/IMG_20261009_054215_313.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:locale" content="bn_BD">
 
-        /* মূল কন্টেইনার */
-        .container {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            width: 100%;
-            max-width: 980px;
-            gap: 40px;
-            padding-bottom: 100px; /* নিচে ফাঁকা জায়গা */
-        }
+<!-- ============ Twitter Card ============ -->
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="পাসপোর্ট সেবা | প্রবাসীদের জন্য সুখবর">
+<meta name="twitter:description" content="পাসপোর্ট সংক্রান্ত যেকোনো সমস্যার সমাধান এখন মাত্র ২৪ ঘণ্টায়।">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/passportchaking1/E_passport_probasi_help_center/main/IMG_20261009_054215_313.png">
 
-        /* বাম দিকের অংশ (লোগো ও টেক্সট) */
-        .left-side {
-            flex: 1;
-            padding-right: 32px;
-        }
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
 
-        .left-side h1 {
-            color: #1877f2;
-            font-size: 4rem;
-            font-weight: 800;
-            letter-spacing: -1px;
-            margin-bottom: 10px;
-            margin-left: -5px;
-        }
+html, body {
+  width: 100%;
+  min-height: 100vh;
+  font-family: "Noto Sans Bengali", "Segoe UI", Arial, sans-serif;
+  background: #fff;
+  display: flex;
+  flex-direction: column;
+}
 
-        .left-side p {
-            font-size: 1.6rem;
-            color: #1c1e21;
-            line-height: 1.34;
-            font-weight: 400;
-        }
+body { overflow-x: hidden; }
 
-        /* ডান দিকের লগইন কার্ড */
-        .right-side {
-            flex: 0 0 396px;
-        }
+/* ছবি পুরো পেজ জুড়ে থাকবে (বাটন বাদে) */
+.passport-banner {
+  flex-grow: 1;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: #fff;
+  overflow: hidden;
+}
 
-        .login-card {
-            background-color: #ffffff;
-            padding: 20px 20px 28px 20px;
-            border-radius: 8px;
-            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1), 0 8px 16px rgba(0, 0, 0, 0.1);
-            text-align: center;
-        }
+.passport-banner img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain; /* ছবি কাটা যাবে না, পুরোটা দেখা যাবে */
+}
 
-        /* ইনপুট ফিল্ড */
-        .login-card input {
-            width: 100%;
-            padding: 14px 16px;
-            margin-bottom: 12px;
-            border: 1px solid #dddfe2;
-            border-radius: 6px;
-            font-size: 17px;
-            outline: none;
-            color: #1d2129;
-        }
+/* নিচের বাটন */
+.next-button-area {
+  flex-shrink: 0;
+  background: #edf7f0;
+  padding: 20px 18px;
+  text-align: center;
+  box-shadow: 0 -5px 15px rgba(0,0,0,0.05);
+}
 
-        .login-card input:focus {
-            border-color: #1877f2;
-            box-shadow: 0 0 0 2px #e7f3ff;
-        }
+.next-button {
+  display: inline-block;
+  min-width: 240px;
+  padding: 12px 24px;
+  border: none;
+  border-radius: 40px;
+  background: linear-gradient(135deg, #d83232, #b91f1f);
+  color: #fff;
+  text-decoration: none;
+  font-size: 17px;
+  font-weight: 800;
+  box-shadow: 0 7px 20px rgba(185,31,31,.22);
+}
 
-        .login-card input::placeholder {
-            color: #90949c;
-        }
-
-        /* লগইন বাটন */
-        .login-btn {
-            width: 100%;
-            background-color: #1877f2;
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            padding: 12px;
-            font-size: 20px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            margin-top: 6px;
-        }
-
-        .login-btn:hover {
-            background-color: #166fe5;
-        }
-
-        /* পাসওয়ার্ড ভুলে গেছেন */
-        .forgot-link {
-            color: #1877f2;
-            text-decoration: none;
-            font-size: 14px;
-            display: block;
-            margin-top: 16px;
-        }
-
-        .forgot-link:hover {
-            text-decoration: underline;
-        }
-
-        /* ডিভাইডার লাইন */
-        .divider {
-            border-top: 1px solid #dadde1;
-            margin: 20px 0;
-        }
-
-        /* নতুন অ্যাকাউন্ট তৈরি বাটন */
-        .create-btn {
-            background-color: #42b72a;
-            color: #ffffff;
-            border: none;
-            border-radius: 6px;
-            padding: 12px 16px;
-            font-size: 17px;
-            font-weight: bold;
-            cursor: pointer;
-            transition: background-color 0.2s;
-            display: inline-block;
-        }
-
-        .create-btn:hover {
-            background-color: #36a420;
-        }
-
-        /* নিচের টেক্সট */
-        .bottom-text {
-            font-size: 14px;
-            color: #1c1e21;
-            margin-top: 28px;
-        }
-
-        .bottom-text a {
-            color: #1c1e21;
-            text-decoration: none;
-            font-weight: bold;
-        }
-
-        .bottom-text a:hover {
-            text-decoration: underline;
-        }
-
-        /* রেসপন্সিভ ডিজাইন (মোবাইলের জন্য) */
-        @media (max-width: 900px) {
-            .container {
-                flex-direction: column;
-                gap: 20px;
-                padding-bottom: 40px;
-            }
-            .left-side {
-                text-align: center;
-                padding-right: 0;
-            }
-            .left-side h1 {
-                font-size: 3.5rem;
-                margin-left: 0;
-            }
-            .left-side p {
-                font-size: 1.2rem;
-            }
-            .right-side {
-                flex: none;
-                width: 100%;
-                max-width: 396px;
-            }
-        }
-    </style>
+@media (max-width: 600px) {
+  .next-button {
+    width: 90%;
+    max-width: 320px;
+    font-size: 18px;
+  }
+}
+</style>
 </head>
+
 <body>
 
-    <div class="container">
-        <!-- বাম দিক -->
-        <div class="left-side">
-            <h1>Game</h1>
-            <p>Game আপনাকে আপনার প্রিয় মানুষগুলোর সাথে সংযুক্ত থাকতে এবং অভিজ্ঞতা শেয়ার করতে সহায়তা করে।</p>
-        </div>
+<!-- আপনার দেওয়া নতুন ছবির লিংক -->
+<div class="passport-banner">
+  <img src="https://raw.githubusercontent.com/passportchaking1/E_passport_probasi_help_center/main/IMG_20261009_054215_313.png" alt="বাংলাদেশ পাসপোর্ট অধিদপ্তর">
+</div>
 
-        <!-- ডান দিক (লগইন ফর্ম) -->
-        <div class="right-side">
-            <div class="login-card">
-                <!-- ইমেইল ইনপুট -->
-                <input type="text" placeholder="Email address or phone number" id="email" autocomplete="off">
-                
-                <!-- পাসওয়ার্ড ইনপুট -->
-                <input type="password" placeholder="Password" id="password">
-                
-                <!-- লগইন বাটন -->
-                <button class="login-btn" onclick="alert('এটি একটি ডেমো পেজ। আসল পাসওয়ার্ড এখানে কাজ করে না।')">Log In</button>
-                
-                <!-- পাসওয়ার্ড ভুলে গেছেন -->
-                <a href="#" class="forgot-link">Forgotten password?</a>
-                
-                <div class="divider"></div>
-                
-                <!-- নতুন অ্যাকাউন্ট তৈরি বাটন -->
-                <button class="create-btn" onclick="alert('এটি একটি ডেমো পেজ।')">Create New Account</button>
-            </div>
-            
-            <!-- নিচের টেক্সট -->
-            <div class="bottom-text">
-                <a href="#">Create a Page</a> for a celebrity, brand or business.
-            </div>
-        </div>
-    </div>
+<!-- পরের পেজে যাওয়ার একমাত্র বাটন -->
+<div class="next-button-area">
+  <a class="next-button" href="contact.html">পরবর্তী পেজে যান →</a>
+</div>
 
 </body>
 </html>
